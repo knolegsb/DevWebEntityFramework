@@ -12,6 +12,8 @@ namespace DevWebEntityFramework
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class NorthwindEntities : DbContext
     {
@@ -27,5 +29,34 @@ namespace DevWebEntityFramework
     
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<Talk> Talks { get; set; }
+        public virtual DbSet<Speaker> Speakers { get; set; }
+    
+        public virtual ObjectResult<SalesByCategory_Result> SalesByCategory(string categoryName, string ordYear)
+        {
+            var categoryNameParameter = categoryName != null ?
+                new ObjectParameter("CategoryName", categoryName) :
+                new ObjectParameter("CategoryName", typeof(string));
+    
+            var ordYearParameter = ordYear != null ?
+                new ObjectParameter("OrdYear", ordYear) :
+                new ObjectParameter("OrdYear", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SalesByCategory_Result>("SalesByCategory", categoryNameParameter, ordYearParameter);
+        }
+    
+        public virtual ObjectResult<SalesByCategory_Result> SalesByCategory1(string categoryName, string ordYear)
+        {
+            var categoryNameParameter = categoryName != null ?
+                new ObjectParameter("CategoryName", categoryName) :
+                new ObjectParameter("CategoryName", typeof(string));
+    
+            var ordYearParameter = ordYear != null ?
+                new ObjectParameter("OrdYear", ordYear) :
+                new ObjectParameter("OrdYear", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SalesByCategory_Result>("SalesByCategory1", categoryNameParameter, ordYearParameter);
+        }
     }
 }

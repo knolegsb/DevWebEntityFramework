@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NorthwindModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NorthwindModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Categories">
           <Key>
             <PropertyRef Name="CategoryID" />
@@ -41,6 +41,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="SalesByCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CategoryName" Type="nvarchar" Mode="In" />
+          <Parameter Name="OrdYear" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="NorthwindModelStoreContainer">
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
@@ -49,8 +53,7 @@
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NorthwindModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -99,42 +102,124 @@
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
+          <EntitySet Name="Rooms" EntityType="NorthwindModel.Room" />
+          <EntitySet Name="Talks" EntityType="NorthwindModel.Talk" />
+          <EntitySet Name="Speakers" EntityType="NorthwindModel.Speaker" />
+          <AssociationSet Name="RoomTalk" Association="NorthwindModel.RoomTalk">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="Talk" EntitySet="Talks" />
+          </AssociationSet>
+          <AssociationSet Name="TalkSpeaker" Association="NorthwindModel.TalkSpeaker">
+            <End Role="Talk" EntitySet="Talks" />
+            <End Role="Speaker" EntitySet="Speakers" />
+          </AssociationSet>
+          <FunctionImport Name="SalesByCategory" ReturnType="Collection(NorthwindModel.SalesByCategory_Result)">
+            <Parameter Name="CategoryName" Mode="In" Type="String" />
+            <Parameter Name="OrdYear" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SalesByCategory1" ReturnType="Collection(NorthwindModel.SalesByCategory_Result)">
+            <Parameter Name="CategoryName" Mode="In" Type="String" />
+            <Parameter Name="OrdYear" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Talks" Relationship="NorthwindModel.RoomTalk" FromRole="Room" ToRole="Talk" />
+        </EntityType>
+        <EntityType Name="Talk">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="When" Type="DateTime" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Rooms" Relationship="NorthwindModel.RoomTalk" FromRole="Talk" ToRole="Room" />
+          <Property Name="RoomId1" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Speakers" Relationship="NorthwindModel.TalkSpeaker" FromRole="Talk" ToRole="Speaker" />
+        </EntityType>
+        <EntityType Name="Speaker">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <NavigationProperty Name="Talks" Relationship="NorthwindModel.TalkSpeaker" FromRole="Speaker" ToRole="Talk" />
+        </EntityType>
+        <Association Name="RoomTalk">
+          <End Type="NorthwindModel.Room" Role="Room" Multiplicity="1" />
+          <End Type="NorthwindModel.Talk" Role="Talk" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Talk">
+              <PropertyRef Name="RoomId1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TalkSpeaker">
+          <End Type="NorthwindModel.Talk" Role="Talk" Multiplicity="*" />
+          <End Type="NorthwindModel.Speaker" Role="Speaker" Multiplicity="*" />
+        </Association>
+        <ComplexType Name="SalesByCategory_Result">
+          <Property Type="String" Name="ProductName" Nullable="false" MaxLength="40" />
+          <Property Type="Decimal" Name="TotalPurchase" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="NorthwindModelStoreContainer" CdmEntityContainer="NorthwindEntities">
-          <EntitySetMapping Name="Categories">
-            <EntityTypeMapping TypeName="NorthwindModel.Category">
-              <MappingFragment StoreEntitySet="Categories">
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Picture" ColumnName="Picture" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Products">
-            <EntityTypeMapping TypeName="NorthwindModel.Product">
-              <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="NorthwindModelStoreContainer" CdmEntityContainer="NorthwindEntities">
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="IsTypeOf(NorthwindModel.Category)">
+        <MappingFragment StoreEntitySet="Categories">
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Products">
+      <EntityTypeMapping TypeName="IsTypeOf(NorthwindModel.Product)">
+        <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+          <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="QuantityPerUnit" ColumnName="QuantityPerUnit" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="UnitsInStock" ColumnName="UnitsInStock" />
+          <ScalarProperty Name="UnitsOnOrder" ColumnName="UnitsOnOrder" />
+          <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+          <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SalesByCategory" FunctionName="NorthwindModel.Store.SalesByCategory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NorthwindModel.SalesByCategory_Result">
                 <ScalarProperty Name="ProductName" ColumnName="ProductName" />
-                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="QuantityPerUnit" ColumnName="QuantityPerUnit" />
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-                <ScalarProperty Name="UnitsInStock" ColumnName="UnitsInStock" />
-                <ScalarProperty Name="UnitsOnOrder" ColumnName="UnitsOnOrder" />
-                <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
-                <ScalarProperty Name="Discontinued" ColumnName="Discontinued" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+                <ScalarProperty Name="TotalPurchase" ColumnName="TotalPurchase" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SalesByCategory1" FunctionName="NorthwindModel.Store.SalesByCategory">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="NorthwindModel.SalesByCategory_Result">
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="TotalPurchase" ColumnName="TotalPurchase" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+    </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -148,7 +233,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

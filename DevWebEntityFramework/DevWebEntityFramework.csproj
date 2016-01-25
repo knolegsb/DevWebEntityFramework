@@ -175,12 +175,44 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="FormInsert.aspx.cs">
+      <DependentUpon>FormInsert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormInsert.aspx.designer.cs">
+      <DependentUpon>FormInsert.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormTaskListInsert.aspx.cs">
+      <DependentUpon>FormTaskListInsert.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormTaskListInsert.aspx.designer.cs">
+      <DependentUpon>FormTaskListInsert.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\TaskList.cs">
+      <DependentUpon>TaskModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaskModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaskModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TaskModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TaskModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="NorthwindModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -207,24 +239,60 @@
       <DependentUpon>NorthwindModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Room.cs">
+      <DependentUpon>NorthwindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalesByCategory_Result.cs">
+      <DependentUpon>NorthwindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Speaker.cs">
+      <DependentUpon>NorthwindModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Talk.cs">
+      <DependentUpon>NorthwindModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsingStoredProcedure.aspx.cs">
+      <DependentUpon>UsingStoredProcedure.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UsingStoredProcedure.aspx.designer.cs">
+      <DependentUpon>UsingStoredProcedure.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Northwind.mdf" />
     <Content Include="App_Data\Northwind_log.ldf">
       <DependentUpon>Northwind.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\TaskDB.mdf" />
+    <Content Include="App_Data\TaskDB_log.ldf">
+      <DependentUpon>TaskDB.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="FormInsert.aspx" />
+    <Content Include="FormTaskListInsert.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\TaskModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TaskModel.edmx</DependentUpon>
+      <LastGenOutput>TaskModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TaskModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TaskModel.edmx</DependentUpon>
+      <LastGenOutput>TaskModel.cs</LastGenOutput>
+    </Content>
     <Content Include="NorthwindModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NorthwindModel.edmx</DependentUpon>
       <LastGenOutput>NorthwindModel.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="NorthwindModel.edmx.sql" />
     <Content Include="NorthwindModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NorthwindModel.edmx</DependentUpon>
@@ -240,6 +308,13 @@
     <Content Include="NorthwindModel.edmx.diagram">
       <DependentUpon>NorthwindModel.edmx</DependentUpon>
     </Content>
+    <EntityDeploy Include="Models\TaskModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TaskModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TaskModel.edmx.diagram">
+      <DependentUpon>TaskModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -252,6 +327,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="UsingStoredProcedure.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
