@@ -189,6 +189,20 @@
     <Compile Include="FormTaskListInsert.aspx.designer.cs">
       <DependentUpon>FormTaskListInsert.aspx</DependentUpon>
     </Compile>
+    <Compile Include="FormTaskListsDelete.aspx.cs">
+      <DependentUpon>FormTaskListsDelete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormTaskListsDelete.aspx.designer.cs">
+      <DependentUpon>FormTaskListsDelete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FormTaskListUpdate.aspx.cs">
+      <DependentUpon>FormTaskListUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FormTaskListUpdate.aspx.designer.cs">
+      <DependentUpon>FormTaskListUpdate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -275,6 +289,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="FormInsert.aspx" />
     <Content Include="FormTaskListInsert.aspx" />
+    <Content Include="FormTaskListsDelete.aspx" />
+    <Content Include="FormTaskListUpdate.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Models\TaskModel.Context.tt">
